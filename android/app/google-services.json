@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "828259144414",
+    "project_id": "firstflutternotes",
+    "storage_bucket": "firstflutternotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828259144414:android:267066112ff36504b6a84f",
+        "android_client_info": {
+          "package_name": "com.sahil789.firstflutternotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChybkz4SSrE35btv_x_Z_XKjuvojbbeKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
