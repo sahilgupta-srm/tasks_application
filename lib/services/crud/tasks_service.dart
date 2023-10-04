@@ -37,7 +37,7 @@ class TasksService{
     }
   }
 
-  Future<DataBaseTasks> updateNotes({required DataBaseTasks task,required String text}) async{
+  Future<DataBaseTasks> updateTasks({required DataBaseTasks task,required String text}) async{
     await _ensureDbIsOpen();
     final db=_getDatabaseOrThrow();
     await getTask(id: task.id);
@@ -273,7 +273,7 @@ const idColumn='id';
 const emailColumn='email';
 const userIdColumn='user_id';
 const textColumn='text';
-const isSyncedWithCloudColumn='is_synced_with_cloud';
+const isSyncedWithCloudColumn='is_synched_with_cloud';
 const createUserTable='''CREATE TABLE IF NOT EXISTS "user" (
 	"id"	INTEGER NOT NULL,
 	"email"	TEXT UNIQUE,
