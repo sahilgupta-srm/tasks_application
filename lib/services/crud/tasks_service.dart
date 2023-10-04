@@ -12,10 +12,16 @@ class TasksService{
   List<DataBaseTasks> _tasks=[];
   //singleton created so multiple instances do not open
   static final TasksService _shared=TasksService._sharedInstance();
-  TasksService._sharedInstance();
+  TasksService._sharedInstance(){
+    _taskStreamController=StreamController<List<DataBaseTasks>>.broadcast(
+      onListen: (){
+        _taskStreamController.sink.add(_tasks);
+      }
+    );
+  }
   factory TasksService()=> _shared;
 
-  final _taskStreamController=StreamController<List<DataBaseTasks>>.broadcast();
+  late final StreamController<List<DataBaseTasks>> _taskStreamController;
   Stream<List<DataBaseTasks>> get allTasks=>_taskStreamController.stream;
 
   Future<void> _cachetasks() async{
@@ -37,7 +43,7 @@ class TasksService{
     }
   }
 
-  Future<DataBaseTasks> updateNotes({required DataBaseTasks task,required String text}) async{
+  Future<DataBaseTasks> updateTasks({required DataBaseTasks task,required String text}) async{
     await _ensureDbIsOpen();
     final db=_getDatabaseOrThrow();
     await getTask(id: task.id);
@@ -165,7 +171,7 @@ Future<DataBaseUser> getUser({required String email}) async{
   }
 }
 
-   Database _getDatabaseOrThrow(){
+  Database _getDatabaseOrThrow(){
     final db=_db;
     if(db==null){
       throw DatabaseIsNotOpen();
@@ -267,26 +273,24 @@ class DataBaseTasks{
 
 }
 const dbName='tasks.db';
-const taskTable='tasks';
+const taskTable='task';
 const userTable='user';
 const idColumn='id';
 const emailColumn='email';
 const userIdColumn='user_id';
 const textColumn='text';
-const isSyncedWithCloudColumn='is_synced_with_cloud';
+const isSyncedWithCloudColumn='is_synched_with_cloud';
 const createUserTable='''CREATE TABLE IF NOT EXISTS "user" (
 	"id"	INTEGER NOT NULL,
-	"email"	TEXT UNIQUE,
+	"email"	TEXT NOT NULL UNIQUE,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );''';
-const createTaskTable='''
-CREATE TABLE IF NOT EXISTS "tasks" (
+const createTaskTable='''CREATE TABLE IF NOT EXISTS "task" (
 	"id"	INTEGER NOT NULL ,
 	"user_id"	INTEGER NOT NULL ,
 	"text"	TEXT,
-	"is_synched_with_cloud"	INTEGER NOT NULL DEFAULT 0,
+	"is_synched_with_cloud" 	INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("user_id") REFERENCES "user"("id")
-);
-''';
+);''';
 
